@@ -4,7 +4,7 @@ title: '#4471 split · three problems, not one'
 owner: Marcin Sepielak
 status: open
 reviewed: 2026-10-28
-signature: Marcin Sepielak
+signature: v1.eyJzdWIiOiIzNTc5IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTMxODY2NzYsImV4cCI6MTc5MzI3MzA3Nn0.PjPBPRkcGY7DpZPfl7SPa0kP_c9GYu783G0jFsGBWRc
 ---
 
 <script>
