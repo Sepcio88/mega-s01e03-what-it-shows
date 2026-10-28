@@ -20,12 +20,13 @@ signature: Marcin Sepielak · MEGA.dev S01E03 harness
   };
 </script>
 
-[#4471](/kb/incidents/4471) is marked known: one bug, one fix queued. Read the reports by tenant,
-channel and form instead of by subject line, and it holds three problems. The queued parser fix
-closes only the first one.
+[#4471](/kb/incidents/4471) was marked known: one bug, one fix. Read the reports by tenant,
+channel and form instead of by subject line, and it holds three problems. #4471 closed on
+5 October with the parser fixed and the `booking-v3` form retired. Neither touches the third.
 
 <Callout kind="warn">
-Not one issue. Each problem below has its own ticket. Do not close #4471 when the parser fix ships.
+#4471 is closed, but <code>shift</code> is not fixed. Its 5 reports keep their own ticket until the time zone
+bug is found.
 </Callout>
 
 ## The split
@@ -36,13 +37,16 @@ Not one issue. Each problem below has its own ticket. Do not close #4471 when th
 
 - **`parser`**: the shared parser reads every date month first. A day-first tenant books 7 April
   and the invite says 4 July. Reports come from the app, by email, and from `booking-v2` forms.
+  Fixed by `fix(dates): parse dd/mm for eu locales`.
 - **`hint`**: `booking-v3` prints `MM/DD/YYYY` under its date field, so people type month first,
   and the form then reads the date the tenant's way, day first. Same symptom, different code: the
-  parser fix does not touch it. Only form reports from `booking-v3` tenants.
+  parser fix does not touch it. Only form reports from `booking-v3` tenants. Won't fix: the form
+  is retired, and its hint went with it.
 - **`shift`**: the date moves by one day instead of flipping (Tuesday becomes Monday; Lisbon and
   Toronto get different days for one meeting). That is time zones, not date order. The desk spotted
   these by hand ([desk notes](/kb/incidents/4471)) and counts them where they are filed, under
-  `parser`; this page counts them the same way and footnotes them.
+  `parser`; this page counts them the same way and footnotes them. Still open: closing #4471 did
+  not cover it.
 
 ## Why the table on #4471 says otherwise
 

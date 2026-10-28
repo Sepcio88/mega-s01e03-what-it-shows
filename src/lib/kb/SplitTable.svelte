@@ -1,6 +1,7 @@
 <script lang="ts">
   import reports from '#lib/data/reports-4471.json';
   import notes from '#lib/data/desk-notes.json';
+  import engineering from '#lib/data/engineering-4471.json';
   import { splitTicket } from '#lib/kb/split';
   import { tenantOf } from '#lib/kb/locales';
   import type { Report } from '#lib/kb/causes';
@@ -10,6 +11,9 @@
 
   const split = $derived(splitTicket(reports as Report[], ticket, tenantOf, notes.oneDayMove));
   const issueNo = (url: string) => '#' + url.split('/').pop();
+  // What engineering did about each problem, once the ticket closed. No entry: still open.
+  const outcomes: Record<string, { state: string; note: string }> =
+    engineering.ticket === ticket ? engineering.outcomes : {};
 </script>
 
 <p class="sum">
@@ -20,7 +24,7 @@
 
 <table>
   <thead>
-    <tr><th>problem</th><th>reports</th><th>tenants</th><th>seen</th><th>intake tag differs</th><th>ticket</th></tr>
+    <tr><th>problem</th><th>reports</th><th>tenants</th><th>seen</th><th>intake tag differs</th><th>ticket</th><th>engineering</th></tr>
   </thead>
   <tbody>
     {#each split.groups as g (g.problem)}
@@ -31,6 +35,7 @@
         <td>{g.firstSeen} → {g.lastSeen}</td>
         <td>{g.mistagged}</td>
         <td>{#if issues[g.problem]}<a href={issues[g.problem]}>{issueNo(issues[g.problem])}</a>{:else}none yet{/if}</td>
+        <td class="state">{#if outcomes[g.problem]}<b>{outcomes[g.problem].state}</b> · {outcomes[g.problem].note}{:else}<b class="open">open</b>{/if}</td>
       </tr>
     {/each}
   </tbody>
@@ -44,4 +49,7 @@
 <style>
   .sum { font-size: 1.1rem; }
   .note { color: var(--muted); font-size: 0.85em; }
+  .state { font-size: 0.85em; color: var(--muted); }
+  .state b { color: var(--fg); }
+  .state b.open { color: var(--warn); }
 </style>
