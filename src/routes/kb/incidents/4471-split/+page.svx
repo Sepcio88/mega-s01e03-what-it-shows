@@ -1,0 +1,60 @@
+---
+layout: runbook
+title: '#4471 split · three problems, not one'
+owner: Marcin Sepielak
+status: open
+reviewed: 2026-10-28
+signature: Marcin Sepielak · MEGA.dev S01E03 harness
+---
+
+<script>
+  import SplitTable from '#lib/kb/SplitTable.svelte';
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+
+  const issues = {
+    parser: 'https://github.com/Sepcio88/mega-s01e03-what-it-shows/issues/1',
+    hint: 'https://github.com/Sepcio88/mega-s01e03-what-it-shows/issues/2',
+    shift: 'https://github.com/Sepcio88/mega-s01e03-what-it-shows/issues/3',
+  };
+</script>
+
+[#4471](/kb/incidents/4471) is marked known: one bug, one fix queued. Read the reports by tenant,
+channel and form instead of by subject line, and it holds three problems. The queued parser fix
+closes only the first one.
+
+<Callout kind="warn">
+Not one issue. Each problem below has its own ticket. Do not close #4471 when the parser fix ships.
+</Callout>
+
+## The split
+
+<SplitTable ticket={4471} {issues} />
+
+## What each one is
+
+- **`parser`**: the shared parser reads every date month first. A day-first tenant books 7 April
+  and the invite says 4 July. Reports come from the app, by email, and from `booking-v2` forms.
+- **`hint`**: `booking-v3` prints `MM/DD/YYYY` under its date field, so people type month first,
+  and the form then reads the date the tenant's way, day first. Same symptom, different code: the
+  parser fix does not touch it. Only form reports from `booking-v3` tenants.
+- **`shift`**: the date moves by one day instead of flipping (Tuesday becomes Monday; Lisbon and
+  Toronto get different days for one meeting). That is time zones, not date order. The desk spotted
+  these by hand ([desk notes](/kb/incidents/4471)) but still counts them under `parser`.
+
+## Why the table on #4471 says otherwise
+
+The table on #4471 counts by cause as `causes.ts` knows it, so the one-day moves stay inside
+`parser` as a footnote. Below is that same table, unchanged:
+
+<CauseTable ticket={4471} />
+
+## How to read reports next time
+
+- Group by **tenant, channel and form**, not by subject or intake tag: intake guesses from the
+  reporter's browser, and the tag differs from the problem on the counts above.
+- A report that does not swap day and month is not this bug, whatever its subject says.
+- The export repeats rows across pages; count by report id.
+
+<RenderStamp {signature} />
