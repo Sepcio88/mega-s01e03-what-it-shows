@@ -26,7 +26,7 @@
     {#each split.groups as g (g.problem)}
       <tr>
         <td><code>{g.problem}</code></td>
-        <td>{g.reports.length}</td>
+        <td>{g.reports.length}{g.alsoIn.length ? '*' : ''}</td>
         <td>{g.tenants}</td>
         <td>{g.firstSeen} → {g.lastSeen}</td>
         <td>{g.mistagged}</td>
@@ -36,6 +36,12 @@
   </tbody>
 </table>
 
+{#each split.groups.filter((g) => g.alsoIn.length) as g (g.problem)}
+  <p class="note">* {g.reports.length} <code>{g.problem}</code> reports are also counted under
+    {#each g.alsoIn as c, i (c)}{i ? ', ' : ''}<code>{c}</code>{/each}, where the desk files them by tenant.</p>
+{/each}
+
 <style>
   .sum { font-size: 1.1rem; }
+  .note { color: var(--muted); font-size: 0.85em; }
 </style>

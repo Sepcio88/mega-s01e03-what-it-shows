@@ -41,12 +41,14 @@ Not one issue. Each problem below has its own ticket. Do not close #4471 when th
   parser fix does not touch it. Only form reports from `booking-v3` tenants.
 - **`shift`**: the date moves by one day instead of flipping (Tuesday becomes Monday; Lisbon and
   Toronto get different days for one meeting). That is time zones, not date order. The desk spotted
-  these by hand ([desk notes](/kb/incidents/4471)) but still counts them under `parser`.
+  these by hand ([desk notes](/kb/incidents/4471)) and counts them where they are filed, under
+  `parser`; this page counts them the same way and footnotes them.
 
 ## Why the table on #4471 says otherwise
 
-The table on #4471 counts by cause as `causes.ts` knows it, so the one-day moves stay inside
-`parser` as a footnote. Below is that same table, unchanged:
+The table on #4471 counts by cause as `causes.ts` knows it: the same counts as above, with the
+one-day moves as a footnote instead of a ticket of their own, and `hint` with no ticket. Below is
+that same table, unchanged:
 
 <CauseTable ticket={4471} />
 
